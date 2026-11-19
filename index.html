@@ -7,18 +7,18 @@ button.act{background:#0f172a;color:#fff}button.run{background:#2563eb;color:#ff
 textarea{width:100%;height:140px;background:#f1f5f9;border:1px solid #cbd5e1;border-radius:8px;padding:10px;font-family:monospace;margin:10px 0}
 .PASS{color:#059669}.BLOCK{color:#dc2626}
 </style></head><body>
-<div style="display:flex;justify-content:space-between;margin-bottom:16px;font-size:13px"><strong>🛡 AMES v2.0 • Суверенный контур 1С (РФ)</strong><a href="https://apumiaaifund.github.io/">← Реестр решений ↗</a></div>
-<div class="card"><h2>APUMIA Retail & POS Guard</h2><p style="color:#64748b;font-size:14px;margin:6px 0 14px">Контроль кассовых разрывов, возвратов, пересортицы и лимитов скидок в 1С:Розница / УТ.</p>
-<div><button onclick="lp(0)">✅ Корректная операция 1С</button><button onclick="lp(1)">⛔ Нарушение инварианта</button></div>
+<div style="display:flex;justify-content:space-between;margin-bottom:16px;font-size:13px"><strong>🛡 AMES v2.0 • Суверенный контур Учётные системы (РФ)</strong><a href="https://apumiaaifund.github.io/">← Реестр решений ↗</a></div>
+<div class="card"><h2>APUMIA Retail & POS Guard</h2><p style="color:#64748b;font-size:14px;margin:6px 0 14px">Контроль кассовых разрывов, возвратов, пересортицы и лимитов скидок в розничных и торговых учётных систем.</p>
+<div><button onclick="lp(0)">✅ Корректная операция Учётные системы</button><button onclick="lp(1)">⛔ Нарушение инварианта</button></div>
 <textarea id="in"></textarea><button class="run" onclick="ev()">Проверить инварианты</button></div>
 <div class="card"><h3 id="res">ГОТОВ К ПРОВЕРКЕ</h3><div id="sh" style="font-family:monospace;font-size:11px;color:#64748b;margin-top:8px"></div></div>
 <script>
-const P=[{"doc":"1С-001","margin_pct":24,"limit_ok":true},{"doc":"1С-002","margin_pct":-4,"limit_ok":false}];
+const P=[{"doc":"Учётные системы-001","margin_pct":24,"limit_ok":true},{"doc":"Учётные системы-002","margin_pct":-4,"limit_ok":false}];
 function lp(i){document.getElementById("in").value=JSON.stringify(P[i],null,2);ev();}
 async function ev(){let t;try{t=JSON.parse(document.getElementById("in").value)}catch(e){return}
 const ok=(t.limit_ok===true && Number(t.margin_pct)>=0);
 const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(JSON.stringify({t,ok})));
 const hex=Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,"0")).join("");
-const r=document.getElementById("res");r.className=ok?"PASS":"BLOCK";r.textContent=ok?"ДОПУЩЕНО (FAIL_CLOSED) • Z3 SMT":"ЗАБЛОКИРОВАНО: НАРУШЕНИЕ ЛИМИТА 1С";
+const r=document.getElementById("res");r.className=ok?"PASS":"BLOCK";r.textContent=ok?"ДОПУЩЕНО (FAIL_CLOSED) • Z3 SMT":"ЗАБЛОКИРОВАНО: НАРУШЕНИЕ ЛИМИТА Учётные системы";
 document.getElementById("sh").textContent="КРИПТО-ШТАМП SHA-256: "+hex;}lp(0);
 </script></body></html>
