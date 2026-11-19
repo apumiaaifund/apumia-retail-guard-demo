@@ -1,0 +1,11 @@
+{
+  "id": "apumia-retail-guard-demo",
+  "category": "Ритейл и 1С",
+  "tags": ["Ритейл", "1С", "Fresh & ЭДО"],
+  "flagship": true,
+  "proven_hash": "AMES-2.0",
+  "title": "АПУМИА: Контроль Отгрузок (Retail & Fresh Guard)",
+  "description": "Автономный шлюз сверки УПД 5.03, заказов ORDERS, Меркурия и Честного ЗНАКа без доступа в 1С и Контур.",
+  "demo_url": "https://github.io",
+  "repo_url": "https://github.com/apumiaaifund/apumia-retail-guard-demo"
+}
