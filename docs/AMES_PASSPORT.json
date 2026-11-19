@@ -1,0 +1,13 @@
+{
+  "product_id": "apumia-retail-guard-demo",
+  "title_ru": "АПУМИА: Контроль Отгрузок",
+  "title_en": "APUMIA Retail & Fresh Guard",
+  "category": "Ритейл и 1С",
+  "ames_version": "2.0",
+  "status": "PROVEN • fea2e43b",
+  "guarantees": [
+    "Zero-Float Arithmetic (Decimal only)",
+    "Air-Gapped Local Execution (Zero 1C/Kontur intrusion)",
+    "UPD 5.03 / ORDERS / VetIS / Chestny ZNAK Deterministic Gate"
+  ]
+}

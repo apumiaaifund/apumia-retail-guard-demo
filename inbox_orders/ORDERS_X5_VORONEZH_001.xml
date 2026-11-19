@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Order>
+    <LineItem>
+        <GTIN>4607001234561</GTIN>
+        <Description>Молоко пастеризованное 3.2% 1л (ПЭТ)</Description>
+        <Price>61.20</Price>
+        <Quantity>1200</Quantity>
+        <NetWeight>1236.000</NetWeight>
+        <TotalShelfLife>10</TotalShelfLife>
+    </LineItem>
+    <LineItem>
+        <GTIN>4607001234578</GTIN>
+        <Description>Сыр Российский 50% весовой (голова)</Description>
+        <Price>540.00</Price>
+        <Quantity>100</Quantity>
+        <NetWeight>850.000</NetWeight>
+        <TotalShelfLife>60</TotalShelfLife>
+    </LineItem>
+</Order>
