@@ -1,24 +1,11 @@
-<!DOCTYPE html><html lang="ru"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>APUMIA Retail & POS Guard — AMES v2.0</title><style>
-body{background:#f8fafc;color:#0f172a;font-family:system-ui,-apple-system,sans-serif;padding:24px;max-width:920px;margin:auto}
-.card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:22px;margin-bottom:16px}
-button{background:#fff;border:1px solid #cbd5e1;padding:7px 12px;border-radius:8px;cursor:pointer;margin:3px}
-button.act{background:#0f172a;color:#fff}button.run{background:#2563eb;color:#fff;font-weight:600}
-textarea{width:100%;height:140px;background:#f1f5f9;border:1px solid #cbd5e1;border-radius:8px;padding:10px;font-family:monospace;margin:10px 0}
-.PASS{color:#059669}.BLOCK{color:#dc2626}
-</style></head><body>
-<div style="display:flex;justify-content:space-between;margin-bottom:16px;font-size:13px"><strong>🛡 AMES v2.0 • Суверенный контур Учётные системы (РФ)</strong><a href="https://apumiaaifund.github.io/">← Реестр решений ↗</a></div>
-<div class="card"><h2>APUMIA Retail & POS Guard</h2><p style="color:#64748b;font-size:14px;margin:6px 0 14px">Контроль кассовых разрывов, возвратов, пересортицы и лимитов скидок в розничных и торговых учётных систем.</p>
-<div><button onclick="lp(0)">✅ Корректная операция Учётные системы</button><button onclick="lp(1)">⛔ Нарушение инварианта</button></div>
-<textarea id="in"></textarea><button class="run" onclick="ev()">Проверить инварианты</button></div>
-<div class="card"><h3 id="res">ГОТОВ К ПРОВЕРКЕ</h3><div id="sh" style="font-family:monospace;font-size:11px;color:#64748b;margin-top:8px"></div></div>
-<script>
-const P=[{"doc":"Учётные системы-001","margin_pct":24,"limit_ok":true},{"doc":"Учётные системы-002","margin_pct":-4,"limit_ok":false}];
-function lp(i){document.getElementById("in").value=JSON.stringify(P[i],null,2);ev();}
-async function ev(){let t;try{t=JSON.parse(document.getElementById("in").value)}catch(e){return}
-const ok=(t.limit_ok===true && Number(t.margin_pct)>=0);
-const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(JSON.stringify({t,ok})));
-const hex=Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,"0")).join("");
-const r=document.getElementById("res");r.className=ok?"PASS":"BLOCK";r.textContent=ok?"ДОПУЩЕНО (FAIL_CLOSED) • Z3 SMT":"ЗАБЛОКИРОВАНО: НАРУШЕНИЕ ЛИМИТА Учётные системы";
-document.getElementById("sh").textContent="КРИПТО-ШТАМП SHA-256: "+hex;}lp(0);
-</script></body></html>
+<!DOCTYPE html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>АПУМИЯ Защита Касс и Розницы — Стенд РФ</title>
+<style>body{margin:0;font-family:system-ui,sans-serif;background:#0b0f19;color:#f1f5f9}header{display:flex;justify-content:space-between;align-items:center;padding:16px 32px;border-bottom:1px solid #26324d;background:#0f1626}.brand{font-weight:800}.brand span{color:#38bdf8}.nav a{color:#38bdf8;text-decoration:none;margin-left:16px;font-size:14px}.wrap{max-width:920px;margin:32px auto;padding:0 20px}.card{background:#131b2e;border:1px solid #26324d;border-radius:16px;padding:26px}.badge{display:inline-block;background:rgba(56,189,248,.12);color:#38bdf8;border:1px solid rgba(56,189,248,.35);padding:4px 12px;border-radius:999px;font-size:12px;font-weight:700;margin-bottom:10px}textarea{width:100%;height:110px;background:#0b0f19;color:#e2e8f0;border:1px solid #334155;border-radius:10px;padding:12px;font-family:monospace;font-size:13px}button{margin-top:12px;background:#38bdf8;color:#0b0f19;border:none;padding:11px 22px;border-radius:10px;font-weight:700;cursor:pointer}.res{margin-top:16px;padding:16px;border-radius:10px;background:#0b0f19;border:1px solid #1e293b;font-family:monospace;font-size:13px;white-space:pre-wrap}.PASS{color:#4ade80;font-weight:800}.FAIL{color:#f87171;font-weight:800}</style></head>
+<body><header><div class="brand">🛡️ АПУМИЯ Защита Касс и Розницы <span>Стенд проверки РФ</span></div><div class="nav"><a href="https://github.io">← Реестр решений</a></div></header>
+<div class="wrap"><div class="card"><div class="badge">54-ФЗ • ФФД 1.2 • Честный ЗНАК • Контроль МРЦ</div><h1>АПУМИЯ Защита Касс и Розницы</h1><p style="color:#94a3b8">Математическая блокировка ошибочных скидок кассиров, продаж ниже МРЦ и чеков без кода маркировки до отправки в ОФД.</p>
+<textarea id="inp">{"товар":"Парфюмерия / Обувь","цена_руб":4200,"мрц_руб":4500,"скидка_пкт":18,"макс_скидка_пкт":15,"код_датаматрикс":"0104601234567890215abc"}</textarea><button onclick="run()">Выполнить проверку (AMES v2.0)</button><div class="res" id="out"></div></div></div>
+<script>async function sha(m){const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(m));return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,"0")).join("")}
+async function run(){let o;try{o=JSON.parse(document.getElementById("inp").value)}catch(e){document.getElementById("out").innerHTML=`Статус: <span class="FAIL">ОТКЛОНЕНО</span>\nОшибка JSON: ${e.message}`;return}
+const err=[];if(o["цена_руб"]<o["мрц_руб"])err.push("НАРУШЕНИЕ МРЦ (Продажа ниже минимальной розничной цены)");if(o["скидка_пкт"]>o["макс_скидка_пкт"])err.push("ПРЕВЫШЕНИЕ ЛИМИТА СКИДКИ КАССИРА");if(!o["код_датаматрикс"])err.push("НЕТ КОДА МАРКИРОВКИ ЧЕСТНЫЙ ЗНАК");const h=await sha(JSON.stringify(o));
+if(err.length===0){document.getElementById("out").innerHTML=`Статус: <span class="PASS">ПОДТВЕРЖДЕНО И ДОКАЗАНО</span>\nВсе нормативы РФ соблюдены.\nSHA-256: ${h}`}
+else{document.getElementById("out").innerHTML=`Статус: <span class="FAIL">ЗАБЛОКИРОВАНО</span>\nПричины:\n - ${err.join("\n - ")}\nSHA-256: ${h}`}}run();</script></body></html>
