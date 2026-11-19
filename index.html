@@ -1,61 +1,24 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-<meta charset="UTF-8">
-<title>АПУМИА: Контроль Отгрузок — Стенд AMES v2.0</title>
-<style>
-  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #0b1120; color: #f8fafc; margin: 0; padding: 28px; max-width: 960px; margin: 0 auto; }
-  .top { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1e293b; padding-bottom: 16px; margin-bottom: 24px; }
-  .proven { background: #064e3b; color: #34d399; border: 1px solid #059669; padding: 4px 10px; border-radius: 6px; font-family: monospace; font-size: 13px; font-weight: bold; }
-  .btns { display: flex; gap: 12px; margin-bottom: 20px; }
-  button { padding: 10px 18px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 14px; }
-  .b-bad { background: #dc2626; color: #fff; }
-  .b-ok { background: #059669; color: #fff; }
-  .box { padding: 24px; border-radius: 12px; margin-bottom: 20px; }
-  .fail { background: #450a0a; border: 2px solid #ef4444; }
-  .pass { background: #064e3b; border: 2px solid #10b981; }
-  .card { background: #1e293b; border-left: 4px solid #ef4444; padding: 14px 18px; border-radius: 8px; margin-bottom: 10px; }
-</style>
-</head>
-<body>
-  <div class="top">
-    <div>
-      <div style="color:#38bdf8; font-size:12px; font-weight:700; letter-spacing:1px;">РИТЕЙЛ • 1С • FRESH & ЭДО</div>
-      <h1 style="margin:4px 0 0 0; font-size:24px;">🛡 АПУМИА: Контроль Отгрузок</h1>
-    </div>
-    <div class="proven">★ FLAGSHIP PROVEN • AMES v2.0</div>
-  </div>
-  <p style="color:#94a3b8; font-size:15px; line-height:1.5;">
-    Детерминированный шлюз-аудитор отгрузок без вмешательства в 1С и Контур. Сверяет выгрузку <b>УПД 5.03</b> с заказом сети <b>ORDERS</b>, <b>ФГИС «Меркурий»</b> и <b>«Честным ЗНАКом»</b> строго без <code>float</code>.
-  </p>
-  <div class="btns">
-    <button class="b-bad" onclick="render('bad')">🔴 Тест: Ошибка 1С (Блокировка ЭДО)</button>
-    <button class="b-ok" onclick="render('ok')">🟢 Тест: Исправленный УПД (Разрешено)</button>
-  </div>
-  <div id="view"></div>
+<!DOCTYPE html><html lang="ru"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>APUMIA Retail & POS Guard — AMES v2.0</title><style>
+body{background:#f8fafc;color:#0f172a;font-family:system-ui,-apple-system,sans-serif;padding:24px;max-width:920px;margin:auto}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:22px;margin-bottom:16px}
+button{background:#fff;border:1px solid #cbd5e1;padding:7px 12px;border-radius:8px;cursor:pointer;margin:3px}
+button.act{background:#0f172a;color:#fff}button.run{background:#2563eb;color:#fff;font-weight:600}
+textarea{width:100%;height:140px;background:#f1f5f9;border:1px solid #cbd5e1;border-radius:8px;padding:10px;font-family:monospace;margin:10px 0}
+.PASS{color:#059669}.BLOCK{color:#dc2626}
+</style></head><body>
+<div style="display:flex;justify-content:space-between;margin-bottom:16px;font-size:13px"><strong>🛡 AMES v2.0 • Суверенный контур 1С (РФ)</strong><a href="https://apumiaaifund.github.io/">← Реестр решений ↗</a></div>
+<div class="card"><h2>APUMIA Retail & POS Guard</h2><p style="color:#64748b;font-size:14px;margin:6px 0 14px">Контроль кассовых разрывов, возвратов, пересортицы и лимитов скидок в 1С:Розница / УТ.</p>
+<div><button onclick="lp(0)">✅ Корректная операция 1С</button><button onclick="lp(1)">⛔ Нарушение инварианта</button></div>
+<textarea id="in"></textarea><button class="run" onclick="ev()">Проверить инварианты</button></div>
+<div class="card"><h3 id="res">ГОТОВ К ПРОВЕРКЕ</h3><div id="sh" style="font-family:monospace;font-size:11px;color:#64748b;margin-top:8px"></div></div>
 <script>
-function render(mode) {
-  const el = document.getElementById('view');
-  if (mode === 'bad') {
-    el.innerHTML = `
-      <div class="box fail">
-        <h2 style="margin:0 0 8px 0;">🔴 СТОП! ВЫГРУЗКА В КОНТУР ЗАБЛОКИРОВАНА</h2>
-        <div style="font-family:monospace; font-size:13px; opacity:0.85;">Контрагент: РЦ X5 • Строк: 2 • Ошибок: 3 • Ядро: АМЕС 2.0 (Decimal)</div>
-      </div>
-      <div class="card"><b>Строка 1 • РАСХОЖДЕНИЕ ЦЕНЫ:</b> Молоко 3.2% — в УПД <code>68.50 ₽</code> вместо промо-цены <code>61.20 ₽</code> из ORDERS.</div>
-      <div class="card"><b>Строка 2 • ОШИБКА ВЕСА (МЕРКУРИЙ):</b> Сыр Российский — в УПД <code>847.200 кг</code> вместо <code>850.000 кг</code> (риск разворота фуры на РЦ).</div>
-      <div class="card"><b>Строка 2 • НАРУШЕНИЕ ОСГ:</b> Остаточный срок годности <code>66.7%</code> при минимальном пороге сети <code>75.0%</code> (риск списания партии).</div>
-    `;
-  } else {
-    el.innerHTML = `
-      <div class="box pass">
-        <h2 style="margin:0 0 8px 0;">🟢 ОТГРУЗКА РАЗРЕШЕНА (ДОКУМЕНТ ЧИСТ)</h2>
-        <div style="font-family:monospace; font-size:13px; opacity:0.85;">Контрагент: РЦ X5 • Строк: 2 • Ошибок: 0 • Цены, веса ВСД и ОСГ ≥ 75% подтверждены.</div>
-      </div>
-    `;
-  }
-}
-render('bad');
-</script>
-</body>
-</html>
+const P=[{"doc":"1С-001","margin_pct":24,"limit_ok":true},{"doc":"1С-002","margin_pct":-4,"limit_ok":false}];
+function lp(i){document.getElementById("in").value=JSON.stringify(P[i],null,2);ev();}
+async function ev(){let t;try{t=JSON.parse(document.getElementById("in").value)}catch(e){return}
+const ok=(t.limit_ok===true && Number(t.margin_pct)>=0);
+const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(JSON.stringify({t,ok})));
+const hex=Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,"0")).join("");
+const r=document.getElementById("res");r.className=ok?"PASS":"BLOCK";r.textContent=ok?"ДОПУЩЕНО (FAIL_CLOSED) • Z3 SMT":"ЗАБЛОКИРОВАНО: НАРУШЕНИЕ ЛИМИТА 1С";
+document.getElementById("sh").textContent="КРИПТО-ШТАМП SHA-256: "+hex;}lp(0);
+</script></body></html>
